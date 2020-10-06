@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Comics List</h1>
+
+{% for comic in comics %}
+<div class="card">
+    <!-- add this single line below -->
+    <a href="{% url 'detail' comic.id %}">
+    <div class="card-content">
+      <span class="card-title">{{ comic.title }}</span>
+      <p>Printed: {{ comic.publisher }}</p>
+      <p>Description: {{ comic.description }}</p>
+      {% if comic.decade > 0 %}
+        <p>Decade: {{ comic.decade }}</p>
+      {% else %}
+        <p>Decade: Unknown</p>
+      {% endif %}
+    </div>
+ <!-- and this following one as well -->
+    </a>
+</div>
+{% endfor %}
+
+{% endblock %}
+
