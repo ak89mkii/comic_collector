@@ -39,7 +39,7 @@ def add_reading(request, comic_id):
 
 class ComicCreate(CreateView):
   model = Comic
-  fields = '__all__'
+  fields = ['title', 'publisher', 'description', 'info', 'decade']
 
 class ComicUpdate(UpdateView):
   model = Comic
