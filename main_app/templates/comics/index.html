@@ -13,7 +13,6 @@
     <a href="{% url 'detail' comic.id %}">
     <img class="center-align" src="{{ comic.description }}">
     </div>
-    <!-- add this single line below -->
     <div class="card-content">
       <span class="card-title">{{ comic.title }}</span>
       <p>Publisher: {{ comic.publisher }}</p>
@@ -24,7 +23,6 @@
         <p>Year: Unknown</p>
       {% endif %}
     </div>
- <!-- and this following one as well -->
     </a>
     </div>
     </div>
