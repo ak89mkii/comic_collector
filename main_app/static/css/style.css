@@ -2,6 +2,7 @@ body {
     display: flex;
     min-height: 100vh;
     flex-direction: column;
+    background-color: steelblue;
   }
   
   main {
@@ -12,3 +13,9 @@ body {
     padding-top: 0;
     text-align: right;
   }
+
+.card {
+    width: 400px;
+    
+}
+
