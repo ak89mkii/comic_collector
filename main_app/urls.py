@@ -10,4 +10,14 @@ urlpatterns = [
     path('comics/<int:pk>/update/', views.ComicUpdate.as_view(),name='comics_update'),
     path('comics/<int:pk>/delete/', views.ComicDelete.as_view(), name='comics_delete'),
     path('comics/<int:comic_id>/add_reading/', views.add_reading, name='add_reading'),
+
+    # NEW
+    path('collectables/', views.CollectableList.as_view(), name='collectables_index'),
+    path('collectables/<int:pk>/', views.CollectableDetail.as_view(), name='collectables_detail'),
+    path('collectables/create/', views.CollectableCreate.as_view(), name='collectables_create'),
+    path('collectables/<int:pk>/update/', views.CollectableUpdate.as_view(), name='collectables_update'),
+    path('collectables/<int:pk>/delete/', views.CollectableDelete.as_view(), name='collectables_delete'),
+    path('comics/<int:comic_id>/assoc_collectable/<int:collectable_id>/', views.assoc_collectable, name='assoc_collectable'),
+
+    
 ]

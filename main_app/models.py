@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from datetime import date
 
 READS = (
     ('B', 'Morning'),
@@ -7,12 +8,24 @@ READS = (
     ('D', 'Night')
 )
 
+class Collectable(models.Model):
+  name = models.CharField(max_length=50)
+  color = models.CharField(max_length=20)
+
+  def __str__(self):
+    return self.name
+
+  def get_absolute_url(self):
+    return reverse('collectables_detail', kwargs={'pk': self.id})
+
 class Comic(models.Model):
     title = models.CharField(max_length=100)
     publisher = models.CharField(max_length=500)
     description = models.CharField(max_length=1000)
     info = models.CharField(max_length=1000, default='')
     decade = models.IntegerField()
+    collectables = models.ManyToManyField(Collectable)
+
 
     def __str__(self):
         return self.title
@@ -21,7 +34,7 @@ class Comic(models.Model):
         return reverse('detail', kwargs={'comic_id': self.id})
 
 class Reading(models.Model):
-    date = models.DateField()
+    date = models.DateField('reading date')
     read = models.CharField(
         max_length=1,
         choices=READS,

@@ -19,6 +19,11 @@
         </ul>
         <ul class="right">
           <li><a href="{% url 'about' %}">About</a></li>
+
+          <!-- NEW -->
+          <li><a href="{% url 'collectables_create' %}">Add a Collectable</a></li>
+          <li><a href="{% url 'collectables_index' %}">View All Collectables</a></li>
+
           <li><a href="{% url 'comics_create' %}">Add a Comic</a></li>
           <li><a href="{% url 'index' %}">View All my Comics</a></li>
         </ul>
@@ -34,3 +39,4 @@
   </footer>
 </body>
 </html>
+
