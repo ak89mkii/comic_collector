@@ -35,6 +35,9 @@ class Comic(models.Model):
     def get_absolute_url(self):
         return reverse('detail', kwargs={'comic_id': self.id})
 
+    def read_for_today(self):
+        return self.reading_set.filter(date=date.today()).count() >= len(READS)
+
 class Reading(models.Model):
     date = models.DateField('reading date')
     read = models.CharField(
