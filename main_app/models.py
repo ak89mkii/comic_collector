@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from datetime import date
+from django.contrib.auth.models import User
 
 READS = (
     ('B', 'Morning'),
@@ -25,6 +26,7 @@ class Comic(models.Model):
     info = models.CharField(max_length=1000, default='')
     decade = models.IntegerField()
     collectables = models.ManyToManyField(Collectable)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
     def __str__(self):

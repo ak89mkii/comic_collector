@@ -18,6 +18,6 @@ urlpatterns = [
     path('collectables/<int:pk>/update/', views.CollectableUpdate.as_view(), name='collectables_update'),
     path('collectables/<int:pk>/delete/', views.CollectableDelete.as_view(), name='collectables_delete'),
     path('comics/<int:comic_id>/assoc_collectable/<int:collectable_id>/', views.assoc_collectable, name='assoc_collectable'),
-
+    path('accounts/signup/', views.signup, name='signup'),
     
 ]

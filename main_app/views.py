@@ -4,6 +4,10 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
 from .models import Comic, Collectable
 from .forms import ReadingForm
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.http import HttpResponse
 
@@ -12,11 +16,13 @@ def home(request):
 
 def about(request):
   return render(request, 'about.html')
-  
+
+@login_required  
 def comics_index(request):
-  comics = Comic.objects.all()
+  comics = Comic.objects.filter(user=request.user)
   return render(request, 'comics/index.html', { 'comics': comics })
 
+@login_required
 def comics_detail(request, comic_id):
   comic = Comic.objects.get(id=comic_id)
 
@@ -28,6 +34,7 @@ def comics_detail(request, comic_id):
     'comic': comic, 'reading_form': reading_form, 'collectables':       collectables_comic_doesnt_have
   })
 
+@login_required
 def add_reading(request, comic_id):
   form = ReadingForm(request.POST)
   if form.is_valid():
@@ -37,39 +44,58 @@ def add_reading(request, comic_id):
   return redirect('detail', comic_id=comic_id)
 
 
-class ComicCreate(CreateView):
+class ComicCreate(LoginRequiredMixin, CreateView):
   model = Comic
   fields = ['title', 'publisher', 'description', 'info', 'decade']
+  def form_valid(self, form):
+    form.instance.user = self.request.user
+    return super().form_valid(form)
 
-class ComicUpdate(UpdateView):
+class ComicUpdate(LoginRequiredMixin, UpdateView):
   model = Comic
   fields = ['publisher', 'info', 'decade']
 
-class ComicDelete(DeleteView):
+class ComicDelete(LoginRequiredMixin, DeleteView):
   model = Comic
   success_url = '/comics/'
 
 # NEW
-class CollectableList(ListView):
+class CollectableList(LoginRequiredMixin, ListView):
   model = Collectable
 
-class CollectableDetail(DetailView):
+class CollectableDetail(LoginRequiredMixin, DetailView):
   model = Collectable
 
-class CollectableCreate(CreateView):
+class CollectableCreate(LoginRequiredMixin, CreateView):
   model = Collectable
   fields = '__all__'
 
-class CollectableUpdate(UpdateView):
+class CollectableUpdate(LoginRequiredMixin, UpdateView):
   model = Collectable
   fields = ['name', 'color']
 
-class CollectableDelete(DeleteView):
+class CollectableDelete(LoginRequiredMixin, DeleteView):
   model = Collectable
   success_url = '/collectables/'
 
+@login_required
 def assoc_collectable(request, comic_id, collectable_id):
   Comic.objects.get(id=comic_id).collectables.add(collectable_id)
   return redirect('detail', comic_id=comic_id)
+
+@login_required
+def signup(request):
+  error_message = ''
+  if request.method == 'POST':
+    form = UserCreationForm(request.POST)
+    if form.is_valid():
+      user = form.save()
+      login(request, user)
+      return redirect('index')
+    else:
+      error_message = 'Invalid sign up - try again'
+  form = UserCreationForm()
+  context = {'form': form, 'error_message': error_message}
+  return render(request, 'registration/signup.html', context)
 
  
